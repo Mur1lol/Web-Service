@@ -14,10 +14,10 @@ interface ArtigosService {
         busca: String,
 
         @Query("country")
-        pais: String,
+        pais: String = "br",
 
         @Query("apiKey")
-        apiKey: String
+        apiKey: String = "ef6b7eef6082426ba0a7990ceb0ce8fd"
 
     ): Call<Resultado>
 }

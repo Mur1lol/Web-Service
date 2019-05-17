@@ -8,5 +8,5 @@ data class Source (
     var nome: String
 ){
     @PrimaryKey(autoGenerate = true)
-    var id: Long = 0
+    var id: String? = null
 }

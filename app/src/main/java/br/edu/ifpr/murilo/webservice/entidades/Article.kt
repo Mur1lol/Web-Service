@@ -1,12 +1,13 @@
 package br.edu.ifpr.murilo.webservice.entidades
 
 import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 import java.sql.Date
 
-@Entity(tableName = "artigos")
+@Entity(tableName = "articles")
 data class Article(
-    var source: List<Source>,
+    var source: Source,
     @SerializedName("author")
     var autor: String,
     @SerializedName("title")
@@ -16,7 +17,10 @@ data class Article(
     var url: String,
     var urlToImage: String,
     @SerializedName("publishedAt")
-    var publicado: Date,
+    var publicado: String,
     @SerializedName("content")
     var conteudo: String
-)
+){
+    @PrimaryKey(autoGenerate = true)
+    var id: Long = 0
+}

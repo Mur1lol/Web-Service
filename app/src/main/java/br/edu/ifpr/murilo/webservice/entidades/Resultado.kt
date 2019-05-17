@@ -7,6 +7,5 @@ import com.google.gson.annotations.SerializedName
 data class Resultado(
     var status: String,
     var totalResults: Int,
-    @SerializedName("articles")
-    var artigos: List<Article>
+    var articles: List<Article>
 )
