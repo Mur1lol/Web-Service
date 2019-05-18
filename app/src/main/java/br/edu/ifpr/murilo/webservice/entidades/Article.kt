@@ -4,6 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 import java.sql.Date
+import java.text.DateFormat
 
 @Entity(tableName = "articles")
 data class Article(

@@ -1,8 +1,12 @@
 package br.edu.ifpr.murilo.webservice.app
 
+import android.content.res.Resources
 import android.os.Bundle
+import android.util.Log
 import android.widget.SearchView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.ConfigurationCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import br.edu.ifpr.murilo.webservice.R
@@ -17,6 +21,8 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
+import java.text.DateFormat
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -28,22 +34,39 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        val df = DateFormat.getDateInstance(DateFormat.LONG, Locale.FRANCE)
+        val date = Date()
+        val abc = DateFormat.getDateInstance(DateFormat.SHORT).format(date)
+        Log.e("Mur1lol", abc)
+        Log.e("Mur1lol", ""+date)
+
+        swipe.isRefreshing = true
         configuraRetrofit()
         carregaDados()
 
         swipe.setOnRefreshListener {
+            swipe.isRefreshing = true
             carregaDados()
         }
 
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(query: String?): Boolean {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                return false
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                if (newText != null) {
+                    if (newText.length >= 3) {
+                        carregaDados()
+                        return false
+                    }
+                    else if(newText.isEmpty()) {
+                        swipe.isRefreshing = true
+                        carregaDados()
+                    }
+                }
+                return false
             }
-
         })
     }
 
@@ -57,17 +80,20 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun carregaDados() {
-        service.getNews("mundo").enqueue(object : Callback<Resultado>{
+        val locale = ConfigurationCompat.getLocales(Resources.getSystem().configuration).get(0)
+        service.getNews(searchView.query.toString(), locale.country).enqueue(object : Callback<Resultado>{
             override fun onFailure(call: Call<Resultado>, t: Throwable) {
-
+                swipe.isRefreshing = false
             }
 
             override fun onResponse(call: Call<Resultado>, response: Response<Resultado>) {
                 val articles = response.body()?.articles
+                swipe.isRefreshing = false
                 if (articles != null)
                     configuraRecyclerView(articles)
             }
         })
+
     }
 
     fun configuraRecyclerView(articles: List<Article>) {

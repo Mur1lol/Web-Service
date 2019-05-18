@@ -9,7 +9,7 @@ import retrofit2.Call
 interface ArtigoDataSource {
     fun getNews(
         busca: String,
-        pais: String = "br",
+        pais: String,
         apiKey: String = "ef6b7eef6082426ba0a7990ceb0ce8fd"
     )
 }
