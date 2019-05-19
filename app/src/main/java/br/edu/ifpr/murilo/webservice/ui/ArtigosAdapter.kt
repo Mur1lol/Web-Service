@@ -1,6 +1,5 @@
 package br.edu.ifpr.murilo.webservice.ui
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +9,8 @@ import br.edu.ifpr.murilo.webservice.entidades.Article
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.artigos_adapter.view.*
 import java.text.DateFormat
-import java.util.*
+import android.content.Intent
+import android.net.Uri
 
 class ArtigosAdapter(private var articles: List<Article>) :
     RecyclerView.Adapter<ArtigosAdapter.ArtigoViewHolder>() {
@@ -27,23 +27,20 @@ class ArtigosAdapter(private var articles: List<Article>) :
 
     inner class ArtigoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun preencherView(article: Article) {
+            val publicado = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.MEDIUM).format(article.publicado)
 
+            Picasso.get().load(article.urlToImage).into(itemView.imageView2)
             itemView.txtTitulo.text = article.titulo
             itemView.txtDescricao.text = article.descricao
             itemView.txtConteudo.text = article.conteudo
             itemView.txtAutor.text = article.autor
-            itemView.txtPublicado.text = article.publicado
-
-            val date = Date()
-            val abc = DateFormat.getDateInstance(DateFormat.SHORT).format(date)
-            Log.e("Mur1lol", abc)
-
-            Picasso.get().load(article.urlToImage).into(itemView.imageView2)
-
-            itemView.btMais.setOnClickListener {
-
+            itemView.txtNome.text = article.source.nome
+            itemView.txtPublicado.text = publicado
+            itemView.btMais.setOnClickListener { v ->
+                val uri = Uri.parse(article.url)
+                val intentBrowser = Intent(Intent.ACTION_VIEW, uri)
+                v.context.startActivity(intentBrowser)
             }
-
         }
     }
 

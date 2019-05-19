@@ -18,7 +18,7 @@ data class Article(
     var url: String,
     var urlToImage: String,
     @SerializedName("publishedAt")
-    var publicado: String,
+    var publicado: java.util.Date,
     @SerializedName("content")
     var conteudo: String
 ){

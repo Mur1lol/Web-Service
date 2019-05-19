@@ -1,6 +1,8 @@
 package br.edu.ifpr.murilo.webservice.app
 
+import android.content.Intent
 import android.content.res.Resources
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.widget.SearchView
@@ -33,12 +35,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        val df = DateFormat.getDateInstance(DateFormat.LONG, Locale.FRANCE)
-        val date = Date()
-        val abc = DateFormat.getDateInstance(DateFormat.SHORT).format(date)
-        Log.e("Mur1lol", abc)
-        Log.e("Mur1lol", ""+date)
 
         swipe.isRefreshing = true
         configuraRetrofit()
